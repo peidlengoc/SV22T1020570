@@ -1,0 +1,34 @@
+﻿@model OrderViewInfo
+@{
+    Layout = null;
+}
+<form method="post" onsubmit="submitOrderAction(event, this, '/Order/Shipping')">
+    <input type="hidden" name="id" value="@Model.OrderID" />
+
+    <div class="modal-header text-bg-info">
+        <strong class="modal-title">
+            Chọn người giao hàng
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <label class="form-label">Người giao hàng</label>
+                <select class="form-select" name="ShipperID"
+                        asp-items="await SelectListHelper.ShippersAsync()">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-bicycle"></i> Giao hàng
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Đóng
+        </button>
+    </div>
+</form>

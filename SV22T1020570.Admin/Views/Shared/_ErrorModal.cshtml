@@ -1,0 +1,21 @@
+﻿@model string
+@{
+    Layout = null;
+}
+
+<div class="modal-header text-bg-danger">
+    <strong class="modal-title">Thông báo</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+    <div class="alert alert-danger">
+        @Model
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        Đóng
+    </button>
+</div>

@@ -1,0 +1,61 @@
+﻿@{
+    Layout = "_Layout";
+    ViewBag.Title = "Thêm thuộc tính sản phẩm";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+
+        <div class="card shadow-sm border-top border-primary border-3">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0 fw-bold">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Thêm thuộc tính sản phẩm
+                </h6>
+            </div>
+
+            <div class="card-body">
+
+                <form>
+
+                    <!-- ATTRIBUTE NAME -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Tên thuộc tính
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="VD: CPU, RAM, Ổ cứng">
+                    </div>
+
+                    <!-- ATTRIBUTE VALUE -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">
+                            Giá trị
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="VD: Intel Core i7, 16GB">
+                    </div>
+
+                    <!-- BUTTONS -->
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i>
+                            Lưu thuộc tính
+                        </button>
+
+                        <a href="/Product/Detail/1"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i>
+                            Bỏ qua
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

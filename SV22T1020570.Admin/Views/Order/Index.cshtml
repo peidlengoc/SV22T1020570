@@ -1,0 +1,103 @@
+﻿@model OrderSearchInput
+@{
+    ViewBag.Title = "Quản lý Đơn hàng";
+}
+@functions {
+
+    string GetStatusName(OrderStatusEnum status)
+    {
+        switch (status)
+        {
+            case OrderStatusEnum.New: return "Đang chờ duyệt";
+            case OrderStatusEnum.Accepted: return "Đã duyệt";
+            case OrderStatusEnum.Shipping: return "Đang giao";
+            case OrderStatusEnum.Completed: return "Hoàn tất";
+            case OrderStatusEnum.Cancelled: return "Đã hủy";
+            case OrderStatusEnum.Rejected: return "Bị từ chối";
+            default: return "";
+        }
+    }
+
+}
+@section PageToolBar {
+    <a href="~/Order/Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>
+        Lập đơn hàng mới
+    </a>
+}
+<div class="card mb-3">
+    <div class="card-body">
+        <form id="formSearch"
+              method="get"
+              action="~/Order/Search"
+              data-target="searchResult"
+              onsubmit="paginationSearch(event, this, 1)">
+            <input type="hidden" asp-for="PageSize" />
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label class="form-label">Trạng thái đơn hàng</label>
+                    <select name="status" class="form-select" onchange="document.getElementById('formSearch').dispatchEvent(new Event('submit'))">
+                        <option value="0">-- Tất cả --</option>
+
+                        @foreach (OrderStatusEnum s in ViewBag.OrderStatuses)
+                        {
+                            if ((int)s != 0)
+                            {
+                                <option value="@((int)s)">
+                                    @GetStatusName(s)
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Thời gian lập đơn hàng</label>
+                    <div class="input-group">
+                        <input type="date" asp-for="DateFrom"
+                               class="form-control"
+                               onchange="paginationSearch(null, document.getElementById('formSearch'), 1)" />
+                        <span class="input-group-text">-</span>
+                        <input type="date" asp-for="DateTo"
+                               class="form-control"
+                               onchange="paginationSearch(null, document.getElementById('formSearch'), 1)" />
+                
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <label class="form-label">Tên khách hàng</label>
+                    <div class="input-group">
+                        <input type="text"
+                               asp-for="SearchValue"
+                               class="form-control"
+                               placeholder="Tên khách hàng..." autofocus />
+
+                        <button class="btn btn-info d-flex align-items-center">
+                            <i class="bi bi-search me-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="searchResult">   
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            paginationSearch(null, document.getElementById("formSearch"), 1);
+        });
+
+        $(function () {
+            $(".date-picker").datepicker({
+                format: "dd/mm/yyyy",
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+}

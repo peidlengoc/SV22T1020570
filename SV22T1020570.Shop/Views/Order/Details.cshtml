@@ -1,0 +1,181 @@
+﻿@model SV22T1020570.Models.Sales.OrderDetailViewModel
+
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+}
+
+<div class="container mt-4">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h3 class="fw-bold text-success">
+            📦 Order #@Model.OrderID
+        </h3>
+        <p class="text-muted">
+            Ngày đặt: @Model.OrderTime.ToString("dd/MM/yyyy HH:mm")
+        </p>
+    </div>
+    
+    <!-- STATUS TIMELINE -->
+    <div class="bg-success text-white p-3 rounded-3 shadow-sm mb-3">
+
+        <div class="d-flex justify-content-between text-center">
+
+            <div>
+                <div class="fw-bold">Đã nhận</div>
+                <small>@Model.OrderTime.ToString("dd/MM")</small>
+            </div>
+
+            <div>
+                <div class="fw-bold">Đã duyệt</div>
+                <small>@(Model.AcceptTime?.ToString("dd/MM") ?? "-")</small>
+            </div>
+
+            <div>
+                <div class="fw-bold">Đang giao</div>
+                <small>@(Model.ShippedTime?.ToString("dd/MM") ?? "-")</small>
+            </div>
+
+            <div>
+                <div class="fw-bold">Hoàn tất</div>
+                <small>@(Model.FinishedTime?.ToString("dd/MM") ?? "-")</small>
+            </div>
+
+        </div>
+
+       
+    </div>
+
+    <div class="row">
+
+        <!-- LEFT -->
+        <div class="col-md-8">
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header fw-bold">
+                    🛒 Sản phẩm
+                </div>
+
+                <div class="card-body">
+
+                    @foreach (var item in Model.Details)
+                    {
+                        <div class="d-flex mb-3 border-bottom pb-2">
+
+                            
+                            <!-- IMAGE -->
+                            <img src="~/images/products/@item.Photo"
+                                 onerror="this.src='/img/nophoto.png'"
+                                 class="rounded"
+                                 style="width:65px; height:65px; object-fit:cover;" />
+
+                            <!-- INFO -->
+                            <div class="flex-grow-1" ">
+                                <div class="fw-semibold">    
+                                    @item.ProductName
+                                </div>
+                                <small class="text-muted">
+                                    Qty: @item.Quantity
+                                </small>
+                            </div>
+                            
+
+                            <!-- PRICE -->
+                            <div class="text-end fw-bold text-success">
+                                @((item.Quantity * item.SalePrice).ToString("N0")) đ
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="col-md-4">
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header fw-bold">
+                    🚚 Giao hàng
+                </div>
+
+                <div class="card-body">
+                    <p><strong>Địa chỉ:</strong> @Model.DeliveryAddress</p>
+                    <p><strong>Tỉnh:</strong> @Model.DeliveryProvince</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+
+                <div class="card-header fw-bold">
+                    💰 Thanh toán
+                </div>
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+                        <span>Tổng tiền</span>
+                        <strong class="text-success">
+                            @Model.TotalPrice.ToString("N0") đ
+                        </strong>
+                    </div>
+
+                    <hr />
+
+                    <!-- CANCEL BUTTON -->
+                    @if (Model.Status == OrderStatusEnum.New)   // chưa duyệt
+                    {
+                        <button onclick="cancelOrder(@Model.OrderID)"
+                                class="btn btn-danger w-100">
+                            ❌ Hủy đơn hàng
+                        </button>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- TOAST -->
+<div id="toast"
+     style="position:fixed; top:20px; left:50%; transform:translateX(-50%);
+            background:#28a745; color:#fff; padding:12px 20px;
+            border-radius:8px; display:none; z-index:9999;">
+</div>
+
+@section Scripts {
+    <script>
+        function showToast(msg) {
+            let t = document.getElementById("toast");
+            t.innerText = msg;
+            t.style.display = "block";
+
+            setTimeout(() => {
+                t.style.display = "none";
+            }, 2000);
+        }
+
+        function cancelOrder(id) {
+            if (!confirm("Bạn chắc chắn muốn hủy đơn?")) return;
+
+            $.post("/Order/Cancel", { id: id }, function (res) {
+                if (res.code == 1) {
+                    showToast("Đã hủy đơn hàng");
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    showToast("Không thể hủy");
+                }
+            });
+        }
+    </script>
+}

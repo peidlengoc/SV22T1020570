@@ -1,0 +1,126 @@
+﻿@model SV22T1020570.Models.Partner.Customer
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-primary">
+
+        <div class="card-header bg-white fw-bold">
+            Chỉnh sửa thông tin cá nhân
+        </div>
+
+        <div class="card-body">
+            @if (TempData["ProfileSuccess"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["ProfileSuccess"]
+                </div>
+            }
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    Vui lòng kiểm tra lại thông tin
+                </div>
+            }
+            <form asp-action="EditProfile" method="post">
+
+                <!-- Họ tên -->
+                <div class="mb-3">
+                    <label class="form-label">Họ tên</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                        <input asp-for="CustomerName" class="form-control"
+                               placeholder="Nhập họ tên" />
+                   
+                    </div>
+                    <span asp-validation-for="CustomerName"
+                          class="text-danger small d-block mt-1"></span>
+                </div>
+                <!-- Tên liên hệ -->
+                <div class="mb-3">
+                    <label class="form-label">Tên liên hệ</label>
+
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fa fa-id-card"></i>
+                        </span>
+
+                        <input asp-for="ContactName"
+                               class="form-control"
+                               placeholder="Nhập tên liên hệ" />
+                    </div>
+
+                    <span asp-validation-for="ContactName"
+                          class="text-danger small d-block mt-1"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                        <input asp-for="Email" class="form-control"
+                               placeholder="Nhập email" />
+                       
+                    </div>
+                    <span asp-validation-for="Email"
+                          class="text-danger small d-block mt-1"></span>
+                </div>
+
+                <!-- SĐT -->
+                <div class="mb-3">
+                    <label class="form-label">Số điện thoại</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                        <input asp-for="Phone" class="form-control"
+                               placeholder="Nhập số điện thoại" />
+                    </div>
+                </div>
+
+                <!-- Địa chỉ -->
+                <div class="mb-3">
+                    <label class="form-label">Địa chỉ</label>
+                    <textarea asp-for="Address" class="form-control"
+                              placeholder="Nhập địa chỉ"></textarea>
+                   
+                </div>
+                <span asp-validation-for="Address"
+                      class="text-danger small d-block mt-1"></span>
+                      <!--Tỉnh-->
+                <div class="mb-3">
+                    <label class="form-label">Tỉnh/Thành</label>
+
+                    <select asp-for="Province" class="form-select">
+                        <option value="">-- Chọn tỉnh/thành --</option>
+
+                        @foreach (var p in ViewBag.Provinces)
+                        {
+                            <option value="@p.Value">@p.Text</option>
+                        }
+                    </select>
+
+                    <span asp-validation-for="Province"
+                          class="text-danger small d-block mt-1"></span>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="text-end">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Quay lại
+                    </a>
+
+                    <button class="btn btn-success">
+                        <i class="fa fa-save"></i> Lưu thay đổi
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

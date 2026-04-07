@@ -1,0 +1,177 @@
+﻿@model List<SV22T1020570.Models.Sales.ShoppingCartItem>
+@{
+    var user = ViewBag.Customer;
+}
+@{
+    decimal subtotal = Model.Sum(x => x.Quantity * x.SalePrice);
+
+    decimal total = subtotal;
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="container py-5">
+
+    <div class="row">
+
+        <!-- 🛒 SUMMARY -->
+        <div class="col-md-6">
+
+            <h4 class="mb-4">🛒 Summary</h4>
+
+            @foreach (var item in Model)
+            {
+                <div class="d-flex mb-3 border-bottom pb-2">
+
+                    <img src="~/images/products/@item.Photo"
+                         onerror="this.src='/img/nophoto.png'"
+                         style="width:70px;height:70px;object-fit:cover"
+                         class="me-3">
+
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">@item.ProductName</div>
+                        <small>Số lượng: @item.Quantity</small>
+                    </div>
+
+                    <div class="fw-bold text-success">
+                        @((item.Quantity * item.SalePrice).ToString("N0")) đ
+                    </div>
+                </div>
+            }
+
+            <div class="mt-4">
+
+                <div class="d-flex justify-content-between">
+                    <span>Shipping</span>
+                    <span>Freeship</span>
+                </div>
+
+                <hr />
+
+                <h4 class="mt-3 text-danger">
+                    Total: @total.ToString("N0") đ
+                </h4>
+
+            </div>
+
+        </div>
+
+        <!-- 💳 PAYMENT -->
+        <div class="col-md-6">
+
+            <h4 class="mb-4">📦 Delivery Information</h4>
+
+            <form id="checkoutForm" method="post">
+                <div class="mb-3">
+                    <label>Họ tên</label>
+                    <input type="text" name="deliveryName"
+                           class="form-control"
+                           value="@user?.CustomerName">
+                </div>
+
+                <div class="mb-3">
+                    <label>Số điện thoại</label>
+                    <input type="text" name="deliveryPhone"
+                           class="form-control"
+                           value="@user?.Phone">
+                </div>
+
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" name="deliveryEmail"
+                           class="form-control"
+                           value="@user?.Email">
+                </div>
+
+                <div class="mb-3">
+                    <label>Địa chỉ</label>
+                    <input type="text" name="deliveryAddress"
+                           class="form-control"
+                           value="@user?.Address"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Tỉnh / Thành Phố</label>
+
+                    <select name="deliveryProvince" class="form-select">
+                        @foreach (var p in ViewBag.Provinces)
+                        {
+                            <option value="@p.Value"
+                                    selected="@(p.Value == user?.Province)">
+                                @p.Text
+                            </option>
+                        }
+                    </select>
+                </div>
+
+            
+            
+                <button type="submit"
+                        class="btn btn-dark w-100 py-3">
+                    🔒 Payment @total.ToString("N0") đ
+                </button>
+
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<script>
+        $(document).ready(function () {
+
+        $("#checkoutForm").submit(function (e) {
+            e.preventDefault();
+
+            let formData = $(this).serialize();
+
+            $.post("/Order/Checkout", formData, function () {
+
+                showToast("✔ Đặt hàng thành công");
+
+                setTimeout(() => {
+                    window.location.href = "/Order/Index";
+                }, 1200);
+            });
+        });
+
+    });
+
+
+    function showToast(msg) {
+
+        let toast = document.createElement("div");
+
+        toast.innerHTML = msg;
+
+        toast.style.position = "fixed";
+        toast.style.top = "50%";
+        toast.style.left = "50%";
+        toast.style.transform = "translate(-50%, -50%) scale(0.9)";
+        toast.style.background = "#28a745";
+        toast.style.color = "#fff";
+        toast.style.padding = "18px 30px";
+        toast.style.borderRadius = "12px";
+        toast.style.fontSize = "16px";
+        toast.style.boxShadow = "0 10px 30px rgba(0,0,0,0.3)";
+        toast.style.zIndex = "9999";
+        toast.style.opacity = "0";
+        toast.style.transition = "all 0.3s ease";
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = "1";
+            toast.style.transform = "translate(-50%, -50%) scale(1)";
+        }, 50);
+
+        setTimeout(() => {
+            toast.style.opacity = "0";
+        }, 1000);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 1300);
+    }
+</script>

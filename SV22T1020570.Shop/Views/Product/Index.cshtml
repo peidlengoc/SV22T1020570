@@ -1,0 +1,103 @@
+﻿@model SV22T1020570.Models.Catalog.ProductSearchInput
+
+<div class="container mt-4">
+
+    <!-- SEARCH -->
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+
+            <form id="formSearch"
+                  method="get"
+                  action="/Product/Search"
+                  data-target="searchResult"
+                  onsubmit="paginationSearch(event, this, 1)">
+
+                <input type="hidden" asp-for="Page" />
+                <input type="hidden" name="PageSize" value="12" />
+
+                <div class="row g-2">
+
+                    <!-- SEARCH TEXT -->
+                    <div class="col-md-4">
+                        <input type="text" asp-for="SearchValue"
+                               class="form-control"
+                               placeholder="Tìm sản phẩm..." />
+                    </div>
+
+                    <!-- CATEGORY -->
+                    <div class="col-md-3">
+                        <select class="form-select"
+                                asp-for="CategoryID"
+                                onchange="paginationSearch(null, document.getElementById('formSearch'), 1)">
+
+                            <option value="0">-- Loại hàng --</option>
+
+                            @foreach (var c in ViewBag.Categories.DataItems)
+                            {
+                                <option value="@c.CategoryID">@c.CategoryName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- PRICE -->
+                    <div class="col-md-2">
+                        <input type="number" asp-for="MinPrice"
+                               class="form-control"
+                               placeholder="Giá từ" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="number" asp-for="MaxPrice"
+                               class="form-control"
+                               placeholder="Đến" />
+                    </div>
+
+                    <!-- BUTTON -->
+                    <div class="col-md-1">
+                        <button class="btn btn-primary w-100">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="searchResult"></div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        paginationSearch(null, document.getElementById("formSearch"), 1);
+    });
+
+        function paginationSearch(event, form, page) {
+
+        if (event) event.preventDefault();
+
+        form.querySelector("[name='Page']").value = page;
+
+        const target = document.getElementById(form.dataset.target);
+
+        // fade out
+        target.style.opacity = 0.3;
+
+        fetch(form.action + "?" + new URLSearchParams(new FormData(form)))
+            .then(res => res.text())
+            .then(html => {
+
+                setTimeout(() => {
+                    target.innerHTML = html;
+
+                    // fade in
+                    target.style.opacity = 1;
+                }, 150);
+
+            });
+    }
+</script>

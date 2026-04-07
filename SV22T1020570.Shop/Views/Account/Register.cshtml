@@ -1,0 +1,137 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container mt-5" style="max-width:500px;">
+    <div class="card shadow-sm">
+
+        <div class="card-header text-center fw-bold">
+            Đăng ký tài khoản
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Register" method="post">
+
+                <!-- Customer Name -->
+                <div class="mb-3">
+                    <label class="form-label">Tên khách hàng</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                        <input type="text" name="customerName" class="form-control"
+                               placeholder="Nhập tên khách hàng" required />
+                    </div>
+                </div>
+
+                <!-- Contact Name -->
+                <div class="mb-3">
+                    <label class="form-label">Tên liên hệ</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-id-badge"></i></span>
+                        <input type="text" name="contactName" class="form-control"
+                               placeholder="Nhập tên liên hệ" required />
+                    </div>
+                </div>
+
+                <!-- Province -->
+                <div class="mb-3">
+                    <label class="form-label">Tỉnh / Thành</label>
+                    <select name="province" class="form-select" required>
+                        <option value="">-- Chọn tỉnh/thành --</option>
+                        @if (ViewBag.Provinces != null)
+                        {
+                            foreach (var item in ViewBag.Provinces)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                        <input type="email" name="email" class="form-control"
+                               placeholder="Nhập email" required />
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <label class="form-label">Mật khẩu</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-lock"></i></span>
+
+                        <input type="password" id="password" name="password"
+                               class="form-control" placeholder="Nhập mật khẩu" required />
+
+                        <button type="button" class="btn btn-outline-secondary"
+                                onclick="togglePassword('password', this)">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-3">
+                    <label class="form-label">Xác nhận mật khẩu</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-check"></i></span>
+
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                               class="form-control" placeholder="Nhập lại mật khẩu" required />
+
+                        <button type="button" class="btn btn-outline-secondary"
+                                onclick="togglePassword('confirmPassword', this)">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ERROR -->
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <!-- BUTTON -->
+                <div class="d-grid mb-3">
+                    <button class="btn btn-success">
+                        <i class="fa fa-user-plus"></i> Đăng ký
+                    </button>
+                </div>
+
+                <!-- LOGIN LINK -->
+                <div class="text-center">
+                    <span>Đã có tài khoản?</span>
+                    <a asp-controller="Account" asp-action="Login" class="text-primary fw-bold">
+                        Đăng nhập
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector("i");
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+</script>

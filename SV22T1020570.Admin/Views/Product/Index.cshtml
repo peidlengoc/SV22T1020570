@@ -1,0 +1,195 @@
+﻿@model ProductSearchInput
+@{
+    ViewBag.Title = "Quản lý Mặt hàng";
+}
+@section PageToolBar {
+    <a href="~/Product/Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>
+        Bổ sung
+    </a>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form id="formSearch"
+              method="get"
+              action="~/Product/Search"
+              data-target="searchResult"
+              onsubmit="paginationSearch(event, this, 1)">
+            <input type="hidden" asp-for="Page" />
+            <input type="hidden" name="PageSize" value="@ApplicationContext.PageSize" />
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label class="form-label">Loại hàng</label>
+                    <select class="form-select" asp-for="CategoryID" onchange="paginationSearch(null, document.getElementById('formSearch'), 1)">
+                        <option value="0">-- Tất cả --</option>
+                        @foreach (var c in ViewBag.Categories.DataItems)
+                        {
+                            if (ViewBag.CategoryID == c.CategoryID)
+                            {
+                                <option value="@c.CategoryID" selected>
+                                    @c.CategoryName
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@c.CategoryID">
+                                    @c.CategoryName
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Nhà cung cấp</label>
+                    <select class="form-select" asp-for="SupplierID" onchange="paginationSearch(null, document.getElementById('formSearch'), 1)">
+                        <option value="0">-- Tất cả --</option>
+                        @foreach (var s in ViewBag.Suppliers.DataItems)
+                        {
+                            if (ViewBag.SupplierID == s.SupplierID)
+                            {
+                                <option value="@s.SupplierID" selected>
+                                    @s.SupplierName
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@s.SupplierID">
+                                    @s.SupplierName
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Khoảng giá</label>
+                    <div class="input-group">
+                        <input type="hidden" asp-for="MinPrice" />
+                        <input type="text"
+                               id="minPriceDisplay"
+                               class="form-control price-input"
+                               placeholder="Từ" />
+
+                        <input type="hidden" asp-for="MaxPrice" />
+
+                        <input type="text"
+                               id="maxPriceDisplay"
+                               class="form-control price-input"
+                               placeholder="Đến" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Tên mặt hàng</label>
+                    <div class="input-group">
+                        <input type="text" asp-for="SearchValue"
+                               class="form-control"
+                               placeholder="Tên mặt hàng..." autofocus />
+                        <button class="btn btn-info d-flex align-items-center">
+                            <i class="bi bi-search me-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="searchResult"></div>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // load lại giá từ hidden → hiển thị đẹp
+            loadPriceFromModel();
+
+            // load dữ liệu lần đầu
+            paginationSearch(null, document.getElementById("formSearch"), @Model.Page);
+
+            // gắn event format cho input
+            attachPriceEvents();
+        });
+
+        // =========================
+        // FORMAT INPUT
+        // =========================
+        function attachPriceEvents() {
+            document.querySelectorAll(".price-input").forEach(function (input) {
+
+                input.addEventListener("input", function () {
+
+                    let raw = this.value.replace(/\D/g, "");
+
+                    if (raw) {
+                        this.value = Number(raw).toLocaleString("vi-VN");
+                    } else {
+                        this.value = "";
+                    }
+
+                });
+
+            });
+        }
+
+        // =========================
+        // SYNC DISPLAY → HIDDEN
+        // =========================
+        function syncPriceToHidden() {
+            let min = document.getElementById("minPriceDisplay").value.replace(/\D/g, "");
+            let max = document.getElementById("maxPriceDisplay").value.replace(/\D/g, "");
+
+        document.querySelector("[name='MinPrice']").value = isNaN(min) ? 0 : min;
+        document.querySelector("[name='MaxPrice']").value = isNaN(max) ? 0 : max;
+        }
+
+        // =========================
+        // LOAD HIDDEN → DISPLAY
+        // =========================
+        function loadPriceFromModel() {
+
+            let min = document.querySelector("[name='MinPrice']").value;
+            let max = document.querySelector("[name='MaxPrice']").value;
+
+            // FIX: kiểm tra hợp lệ
+            if (min && !isNaN(min) && Number(min) > 0) {
+                document.getElementById("minPriceDisplay").value =
+                    Number(min).toLocaleString("vi-VN");
+            } else {
+                document.getElementById("minPriceDisplay").value = "";
+            }
+
+            if (max && !isNaN(max) && Number(max) > 0) {
+                document.getElementById("maxPriceDisplay").value =
+                    Number(max).toLocaleString("vi-VN");
+            } else {
+                document.getElementById("maxPriceDisplay").value = "";
+            }
+        }
+
+        // =========================
+        // SEARCH AJAX
+        // =========================
+        function paginationSearch(event, form, page) {
+
+            if (event) event.preventDefault();
+            form.querySelector("[name='Page']").value = page;
+            // ⭐ QUAN TRỌNG: sync trước khi gửi
+            syncPriceToHidden();
+
+            fetch(form.action + "?" + new URLSearchParams(new FormData(form)))
+                .then(res => res.text())
+                .then(html => {
+
+                    document.getElementById(form.dataset.target).innerHTML = html;
+
+                    // format lại sau khi load
+                    loadPriceFromModel();
+                    attachPriceEvents();
+
+                });
+        }
+    </script>
+}
+
+

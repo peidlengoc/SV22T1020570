@@ -1,0 +1,136 @@
+﻿@model PagedResult<SV22T1020570.Models.Sales.OrderViewInfo>
+@using SV22T1020570.Models.Sales
+@{
+    Layout = null;
+}
+
+@if (Model.DataItems == null || Model.DataItems.Count == 0)
+{
+    <div class="text-center text-muted">
+        Không có đơn hàng
+    </div>
+}
+else
+{
+    foreach (var order in Model.DataItems)
+    {
+        var status = (OrderStatusEnum)order.Status;
+
+        string statusClass = "badge";
+
+        switch (status)
+        {
+            case OrderStatusEnum.New:
+                statusClass += " bg-primary"; break;
+
+            case OrderStatusEnum.Accepted:
+                statusClass += " bg-info text-dark"; break;
+
+            case OrderStatusEnum.Shipping:
+                statusClass += " bg-warning text-dark"; break;
+
+            case OrderStatusEnum.Completed:
+                statusClass += " bg-success"; break;
+
+            case OrderStatusEnum.Cancelled:
+            case OrderStatusEnum.Rejected:
+                statusClass += " bg-danger"; break;
+        }
+
+        <div class="card mb-3 shadow-sm">
+
+            <div class="card-body">
+
+                <!-- HEADER -->
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <strong>#@order.OrderID</strong><br />
+                        <small class="text-muted">
+                            @order.OrderTime.ToString("dd/MM/yyyy")
+                        </small>
+                    </div>
+
+                    <span class="@statusClass px-4 py-3 rounded-pill fw-semibold">
+                        @status
+                    </span>
+
+                </div>
+
+                <hr />
+
+                <!-- 🔥 PRODUCT NAME INSTEAD OF PRICE -->
+                @{
+                    var details = await SV22T1020570.BusinessLayers.SalesDataService
+                    .ListDetailsAsync(order.OrderID);
+                }
+
+                @foreach (var item in details.Take(2))
+                {
+                    <div class="d-flex align-items-center gap-2 mb-1">
+
+                        <img src="~/images/products/@item.Photo"
+                             onerror="this.src='/img/nophoto.png'"
+                             style="width:40px;height:40px;object-fit:cover"
+                             class="rounded" />
+
+                        <div class="flex-grow-1">
+                            @item.ProductName
+                        </div>
+
+                    </div>
+                }
+
+                @if (details.Count > 2)
+                {
+                    <small class="text-muted">
+                        + @(details.Count - 2) sản phẩm khác
+                    </small>
+                }
+
+                <!-- BUTTON -->
+                <div class="text-end mt-2">
+                    <a href="/Order/Details/@order.OrderID"
+                       class="btn btn-sm btn-outline-primary">
+                        View →
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    }
+}
+
+<!-- 🔥 PAGINATION AJAX -->
+<div class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        @foreach (var p in Model.GetDisplayPages())
+        {
+            if (p.IsCurrent)
+            {
+                <li class="page-item active">
+                    <a class="page-link">@p.Page</a>
+                </li>
+            }
+            else if (p.IsEllipsis)
+            {
+                <li class="page-item">
+                    <a class="page-link">...</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       href="javascript:;"
+                       onclick="paginationSearch(event, document.getElementById('formSearch'), @p.Page)">
+                        @p.Page
+                    </a>
+                </li>
+            }
+        }
+
+    </ul>
+</div>

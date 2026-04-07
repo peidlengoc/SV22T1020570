@@ -1,0 +1,178 @@
+/*** Spinner Start ***/
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .8s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+    #spinner.show {
+        visibility: visible;
+        opacity: 1;
+    }
+/*** Spinner End ***/
+
+/*** Button Start ***/
+.btn {
+    font-weight: 600;
+    transition: .5s;
+}
+
+.btn-square {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-sm-square {
+    width: 34px;
+    height: 34px;
+}
+
+.btn-md-square {
+    width: 44px;
+    height: 44px;
+}
+
+.btn-lg-square {
+    width: 56px;
+    height: 56px;
+}
+
+.btn-square,
+.btn-sm-square,
+.btn-md-square,
+.btn-lg-square {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*** Button End ***/
+.topbar {
+    width: 100%;
+    padding: 8px 0;
+    border-radius: 0;
+}
+/*** Navbar Start ***/
+.navbar {
+    height: 100px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+    .navbar .nav-link {
+        font-weight: 400;
+    }
+
+        .navbar .nav-link.active {
+            font-weight: 600;
+            color: var(--bs-primary);
+        }
+/*** Navbar End ***/
+
+/*** Hero Header (GIỮ NGUYÊN OVERLAY) ***/
+.hero-header {
+    background: linear-gradient(rgba(248,223,173,0.1), rgba(248,223,173,0.1)), url(../img/hero-img.jpg);
+    background-position: center;
+    background-size: cover;
+}
+/*** Hero End ***/
+
+/*** Product Card ***/
+.fruite .fruite-item {
+    height: 100%;
+    transition: 0.5s;
+}
+
+    .fruite .fruite-item:hover {
+        box-shadow: 0 0 55px rgba(0,0,0,0.4);
+    }
+
+.fruite .fruite-img {
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+}
+
+    .fruite .fruite-img img {
+        transition: 0.5s;
+    }
+
+        .fruite .fruite-img img:hover {
+            transform: scale(1.3);
+        }
+/*** Product End ***/
+
+/*** SERVICE BOX ***/
+.service .service-item .service-content {
+    position: relative;
+    width: 250px;
+    height: 130px;
+    top: -50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/*** Service End ***/
+
+
+/*** FIX DROPDOWN (KHÔNG PHÁ BOOTSTRAP) ***/
+.dropdown-menu {
+    /* KHÔNG override display nữa */
+}
+
+/*** =========================
+    🔥 PAGINATION FIX (CHUẨN NHẤT)
+========================= ***/
+.pagination {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 25px;
+    padding-left: 0;
+    list-style: none;
+}
+
+    .pagination li {
+        display: inline-block !important;
+    }
+
+    .pagination .page-link,
+    .pagination a {
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        color: #333;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        /* hover */
+        .pagination .page-link:hover,
+        .pagination a:hover {
+            background: var(--bs-secondary);
+            color: #fff;
+            border-color: var(--bs-secondary);
+        }
+
+        /* active */
+        .pagination .active .page-link,
+        .pagination a.active {
+            background: var(--bs-secondary);
+            color: #fff;
+            border-color: var(--bs-secondary);
+        }
+
+/*** Footer ***/
+.footer {
+    padding: 6px 0 !important;
+    font-size: 12px;
+}
+
+    .footer h2 {
+        font-size: 16px;
+    }
+
+    .footer p {
+        margin-bottom: 2px;
+    }
+/*** Footer End ***/

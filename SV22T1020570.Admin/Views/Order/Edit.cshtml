@@ -1,0 +1,100 @@
+﻿
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+
+        <div class="card card-outline card-warning">
+
+            <!-- HEADER -->
+            <div class="card-header">
+                <h6 class="card-title fw-bold mb-0">
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Cập nhật trạng thái đơn hàng
+                </h6>
+            </div>
+
+            <div class="card-body">
+
+                <!-- ===== THÔNG TIN ĐƠN HÀNG (READ-ONLY) ===== -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Mã đơn hàng</label>
+                        <input type="text"
+                               class="form-control"
+                               value="DH001"
+                               autofocus
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Ngày đặt</label>
+                        <input type="text"
+                               class="form-control"
+                               value="01/03/2026"
+                               readonly />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Khách hàng</label>
+                        <input type="text"
+                               class="form-control"
+                               value="Nguyễn Văn A"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Thành tiền</label>
+                        <input type="text"
+                               class="form-control text-danger fw-bold"
+                               value="15,000,000"
+                               readonly />
+                    </div>
+                </div>
+
+                <!-- ===== TRẠNG THÁI HIỆN TẠI ===== -->
+                <div class="mb-4">
+                    <label class="form-label">Trạng thái hiện tại</label>
+                    <div>
+                        <span class="badge bg-warning text-dark">
+                            Chờ xử lý
+                        </span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- ===== CẬP NHẬT TRẠNG THÁI ===== -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        Trạng thái mới
+                    </label>
+                    <select class="form-select" required>
+                        <option value="">-- Chọn trạng thái mới --</option>
+                        <option>Chờ xử lý</option>
+                        <option>Đang giao</option>
+                        <option>Hoàn thành</option>
+                        <option>Đã hủy</option>
+                    </select>
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="d-flex justify-content-between">
+                    <a href="/Order"
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Quay lại
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-warning">
+                        <i class="bi bi-save me-1"></i>
+                        Lưu thay đổi
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

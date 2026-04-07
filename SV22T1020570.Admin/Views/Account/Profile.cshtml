@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Thông tin tài khoản";
+}
+
+@section PageToolBar {
+    <a href="~/" class="btn btn-secondary ms-1">
+        <i class="bi bi-arrow-left"></i>
+        Quay lại
+    </a>
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Thông tin tài khoản
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <!-- Thông báo thành công -->
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle"></i> @TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <!-- Thông báo lỗi -->
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <div class="row">
+                    <!-- Avatar -->
+                    <div class="col-md-3 text-center">
+                        <div class="mb-3">
+                            <div class="avatar-circle">
+                                <i class="bi bi-person-fill" style="font-size: 80px; color: #6c757d;"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin chi tiết -->
+                    <div class="col-md-9">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th style="width: 150px;">Tên đăng nhập:</th>
+                                <td>@ViewBag.UserId</td>
+                            </tr>
+                            <tr>
+                                <th>Họ và tên:</th>
+                                <td>@ViewBag.DisplayName</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>@ViewBag.Email</td>
+                            </tr>
+                            <tr>
+                                <th>Vai trò:</th>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(ViewBag.Roles))
+                                    {
+                                        <span class="badge bg-info">@ViewBag.Roles</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Chưa có quyền</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Ngày tạo:</th>
+                                <td>@ViewBag.CreatedDate</td>
+                            </tr>
+                            <tr>
+                                <th>Lần đăng nhập cuối:</th>
+                                <td>@ViewBag.LastLoginDate</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Thông tin bảo mật:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Không chia sẻ mật khẩu với bất kỳ ai</li>
+                                <li>Nên đổi mật khẩu định kỳ 3-6 tháng/lần</li>
+                                <li>Sử dụng mật khẩu mạnh có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer text-end">
+                <a href="~/Account/ChangePassword" class="btn btn-warning">
+                    <i class="bi bi-key"></i> Đổi mật khẩu
+                </a>
+                <a href="~/Account/Logout" class="btn btn-danger ms-2">
+                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 120px;
+        height: 120px;
+        background-color: #e9ecef;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 3px solid #007bff;
+    }
+
+    .table th {
+        /* background-color: #f8f9fa; */
+        font-weight: 600;
+    }
+
+    .table td {
+        color: #495057;
+    }
+</style>
