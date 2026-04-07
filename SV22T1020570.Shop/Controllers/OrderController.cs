@@ -140,7 +140,7 @@ namespace SV22T1020570.Shop.Controllers
             if (cart == null || cart.Count == 0)
                 return RedirectToAction("Cart");
 
-            // 🔥 LẤY PROFILE TỪ DB
+            
             var customer = await PartnerDataService.GetCustomerAsync(customerId);
 
             ViewBag.Customer = customer;
@@ -173,7 +173,7 @@ namespace SV22T1020570.Shop.Controllers
 
             try
             {
-                // 🔥 dùng đúng service của mày
+                
                 await SalesDataService.AddOrderFromCustomerAsync(customerId, deliveryProvince, deliveryAddress);
                 await _cartService.ClearCartAsync(customerId);
                 TempData["Success"] = "Đặt hàng thành công";
@@ -260,7 +260,7 @@ namespace SV22T1020570.Shop.Controllers
                 ShippedTime = order.ShippedTime,
                 FinishedTime = order.FinishedTime,
 
-                // 🔥 map từ OrderDetailViewInfo → OrderDetail
+                
                 Details = details.Select(x => new OrderDetailViewInfo
                 {
                     OrderID = x.OrderID,

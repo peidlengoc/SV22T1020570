@@ -340,17 +340,14 @@ namespace SV22T1020570.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> SavePhoto(ProductPhoto data, IFormFile? uploadPhoto)
         {
-            if (data.ProductID == 0)
-            {
-                data.ProductID = int.Parse(Request.Form["ProductID"]);
-            }
-
             // ===== VALIDATE =====
             if (data.DisplayOrder <= 0)
                 ModelState.AddModelError(nameof(data.DisplayOrder), "Thứ tự phải > 0");
 
-            //Tiền xử lý dữ liệu trước khi lưu vào database
-            if (string.IsNullOrEmpty(data.Description)) data.Description = "";
+            // Tiền xử lý
+            if (string.IsNullOrEmpty(data.Description))
+                data.Description = "";
+
             if (!ModelState.IsValid)
                 return View("EditPhoto", data);
 
@@ -370,9 +367,9 @@ namespace SV22T1020570.Admin.Controllers
                     data.Photo = fileName;
                 }
 
-                // nếu không upload ảnh mới → giữ ảnh cũ
+                // nếu không upload ảnh mới → bắt buộc phải có ảnh cũ
                 if (string.IsNullOrEmpty(data.Photo))
-                    data.Photo = "nophoto.png";
+                    ModelState.AddModelError(nameof(data.Photo), "Vui lòng tải ảnh lên trước khi update!");
 
                 // ===== SAVE =====
                 if (data.PhotoID == 0)
