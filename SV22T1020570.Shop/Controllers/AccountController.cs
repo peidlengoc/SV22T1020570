@@ -10,7 +10,7 @@ namespace SV22T1020570.Shop.Controllers
     public class AccountController : Controller
     {
         /// <summary>
-        /// Login (GET) - Hiển thị trang đăng nhập
+        ///  đăng nhập
         /// </summary>
         /// <param name="returnUrl"></param>
         /// <returns></returns>
@@ -26,7 +26,7 @@ namespace SV22T1020570.Shop.Controllers
         }
 
         /// <summary>
-        /// Login (POST) - Xử lý đăng nhập khi người dùng submit form đăng nhập
+        /// Xử lý đăng nhập
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
@@ -47,7 +47,7 @@ namespace SV22T1020570.Shop.Controllers
 
             var claims = new List<System.Security.Claims.Claim>
 {
-    new(System.Security.Claims.ClaimTypes.Name, user.Email), // 🔥 SỬA CHỖ NÀY
+    new(System.Security.Claims.ClaimTypes.Name, user.Email), 
     new(System.Security.Claims.ClaimTypes.Role, user.RoleNames),
     new("UserId", user.UserId.ToString())
 };
@@ -57,7 +57,7 @@ namespace SV22T1020570.Shop.Controllers
 
             await HttpContext.SignInAsync("ShopScheme", principal, new Microsoft.AspNetCore.Authentication.AuthenticationProperties
             {
-                IsPersistent = rememberMe, // 🔥 QUAN TRỌNG
+                IsPersistent = rememberMe, 
                 ExpiresUtc = rememberMe ? DateTime.UtcNow.AddDays(7) : DateTime.UtcNow.AddHours(1)
             });
 
@@ -65,7 +65,7 @@ namespace SV22T1020570.Shop.Controllers
         }
 
         /// <summary>
-        /// Logout - Đăng xuất khỏi hệ thống
+        /// Đăng xuất
         /// </summary>
         /// <returns></returns>
         public async Task<IActionResult> Logout()
@@ -92,7 +92,7 @@ namespace SV22T1020570.Shop.Controllers
             return View(customer);
         }
         /// <summary>
-        /// Profile - Hiển thị thông tin tài khoản của người dùng đã đăng nhập
+        /// Hiển thị thông tin tài khoản của người dùng đã đăng nhập
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -271,7 +271,7 @@ namespace SV22T1020570.Shop.Controllers
                 var username = userData.UserName;
                 
 
-                // 🔥 VALIDATION NÂNG CAO
+               
                 if (string.IsNullOrWhiteSpace(currentPassword))
                     ModelState.AddModelError("currentPassword", "Vui lòng nhập mật khẩu hiện tại");
 
@@ -301,9 +301,7 @@ namespace SV22T1020570.Shop.Controllers
                 if (!ModelState.IsValid)
                     return View();
 
-                // 🔥 CHECK PASSWORD CŨ TRƯỚC
-               
-                // 🔥 ĐỔI PASSWORD
+                
                 var result = await CustomerAccountService.ChangePasswordAsync(username, currentPassword, newPassword);
 
                 if (!result)
@@ -312,7 +310,7 @@ namespace SV22T1020570.Shop.Controllers
                     return View();
                 }
 
-                // 🔥 SUCCESS
+               
                 TempData["Success"] = "Đổi mật khẩu thành công. Vui lòng đăng nhập lại!";
 
                 await HttpContext.SignOutAsync("ShopScheme");

@@ -6,12 +6,11 @@
     decimal total = subtotal;
 }
 
-<!-- 🔥 NHỚ THÊM JQUERY -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="container py-5">
 
-    <!-- 🔥 CLEAR CART -->
+   
     <div class="text-end mb-3">
         <button class="btn btn-outline-danger" id="clearCart">
             Clear Cart
@@ -28,7 +27,6 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
-                    <th>Total</th>
                     <th>Handle</th>
                 </tr>
             </thead>
@@ -53,7 +51,7 @@
                         </td>
 
                         <td>
-                            <div class="input-group justify-content-center" style="width:120px;">
+                            <div class="input-group justify-content-lg-end" style="width:100px;">
                                 <button class="btn btn-light minus">-</button>
 
                                 <input type="text"
@@ -65,9 +63,7 @@
                             </div>
                         </td>
 
-                        <td class="item-total">
-                            @total.ToString("N0") đ
-                        </td>
+                     
 
                         <td>
                             <button class="btn btn-danger delete">
@@ -91,7 +87,7 @@
 
                 <div class="d-flex justify-content-between">
                     <span>Subtotal</span>
-                    <span id="subtotal">@subtotal</span>
+                    <span id="subtotal">@subtotal.ToString("N0")đ</span>
                 </div>
 
                 <div class="d-flex justify-content-between">
@@ -103,7 +99,7 @@
 
                 <div class="d-flex justify-content-between fw-bold">
                     <span>Total</span>
-                    <span id="total">@total</span>
+                    <span id="total">@total.ToString("N0")đ</span>
                 </div>
 
                 <button class="btn btn-success w-100 mt-3" onclick="goCheckout()">
