@@ -161,53 +161,7 @@ namespace SV22T1020570.Admin.Controllers
             }
 
         }
-        ///// <summary>
-        ///// Đổi mật khẩu nhân viên
-        ///// </summary>
-        ///// <param name="id">Mã nhân viên</param>
-        ///// <returns></returns>
-        //public async Task<IActionResult> ChangePassword(int id)
-        //{
-        //    ViewBag.Title = "Thay đổi mật khẩu nhân viên";
-
-        //    var employee = await HRDataService.GetEmployeeAsync(id);
-        //    if (employee == null)
-        //        return RedirectToAction("Index");
-
-        //    ViewBag.EmployeeID = id;
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> ChangePassword(int id, string password, string confirmPassword)
-        //{
-        //    ViewBag.Title = "Thay đổi mật khẩu nhân viên";
-
-        //    // validate
-        //    if (string.IsNullOrWhiteSpace(password))
-        //        ModelState.AddModelError("password", "Vui lòng nhập mật khẩu");
-
-        //    if (password != confirmPassword)
-        //        ModelState.AddModelError("confirmPassword", "Mật khẩu xác nhận không đúng");
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        ViewBag.EmployeeID = id;
-        //        return View();
-        //    }
-
-        //    // 🔥 GỌI SERVICE (bạn phải có hàm này)
-        //    var ok = await UserAccountService.ChangePasswordAsync(id.ToString(), password);
-
-        //    if (!ok)
-        //    {
-        //        ModelState.AddModelError("", "Không thể đổi mật khẩu");
-        //        ViewBag.EmployeeID = id;
-        //        return View();
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
+  
         [HttpGet]
         public async Task<IActionResult> ChangeRole(int id)
         {

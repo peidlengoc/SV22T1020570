@@ -353,7 +353,6 @@ namespace SV22T1020570.Admin.Controllers
 
             try
             {
-                // ===== UPLOAD ẢNH =====
                 if (uploadPhoto != null)
                 {
                     var fileName = $"{Guid.NewGuid()}{Path.GetExtension(uploadPhoto.FileName)}";
@@ -367,11 +366,9 @@ namespace SV22T1020570.Admin.Controllers
                     data.Photo = fileName;
                 }
 
-                // nếu không upload ảnh mới → bắt buộc phải có ảnh cũ
                 if (string.IsNullOrEmpty(data.Photo))
                     ModelState.AddModelError(nameof(data.Photo), "Vui lòng tải ảnh lên trước khi update!");
 
-                // ===== SAVE =====
                 if (data.PhotoID == 0)
                     await CatalogDataService.AddPhotoAsync(data);
                 else

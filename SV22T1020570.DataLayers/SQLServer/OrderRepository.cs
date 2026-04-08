@@ -327,34 +327,28 @@ namespace SV22T1020570.DataLayers.SQLServer
                 PageSize = input.PageSize
             };
 
-            // 🔥 BASE WHERE
             string where = "WHERE CustomerID = @CustomerID";
 
-            // 🔍 SEARCH
             if (!string.IsNullOrWhiteSpace(input.SearchValue))
             {
                 where += " AND CAST(OrderID AS NVARCHAR) LIKE @SearchValue";
             }
 
-            // 📌 STATUS
             if (input.Status != 0)
             {
                 where += " AND Status = @Status";
             }
 
-            // 📅 DATE FROM
             if (input.DateFrom.HasValue)
             {
                 where += " AND OrderTime >= @DateFrom";
             }
 
-            // 📅 DATE TO (fix chuẩn full ngày)
             if (input.DateTo.HasValue)
             {
                 where += " AND OrderTime < DATEADD(day, 1, @DateTo)";
             }
 
-            // 🔢 COUNT
             string countSql = $@"
         SELECT COUNT(*)
         FROM Orders
@@ -369,7 +363,6 @@ namespace SV22T1020570.DataLayers.SQLServer
                 DateTo = input.DateTo
             });
 
-            // 📦 DATA
             string sql = $@"
         SELECT *
         FROM Orders

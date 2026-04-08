@@ -5,7 +5,7 @@ using SV22T1020570.Admin.Models;
 
 namespace SV22T1020570.Admin.Controllers
 {
-    [Authorize] // 🔥 CHẶN TOÀN BỘ CONTROLLER
+    [Authorize] 
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -25,7 +25,7 @@ namespace SV22T1020570.Admin.Controllers
             return View();
         }
 
-        [AllowAnonymous] // 👉 cho phép truy cập tự do
+        [AllowAnonymous] 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -28,14 +28,12 @@ namespace SV22T1020570.Admin.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string username, string password, string? returnUrl = null)
         {
-            // 🚨 Validate cơ bản
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 ViewBag.Error = "Vui lòng nhập đầy đủ thông tin";
                 return View();
             }
 
-            // 🔥 GỌI ĐÚNG SERVICE (async)
             var user = await UserAccountService.AuthorizeAsync(username, password);
 
             if (user == null)
@@ -58,13 +56,11 @@ namespace SV22T1020570.Admin.Controllers
 
             var principal = webUser.CreatePrincipal();
 
-            // 🔥 LOGIN (tạo cookie)
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal
             );
 
-            // 🔥 Redirect đúng (nếu có returnUrl)
             if (!string.IsNullOrEmpty(returnUrl))
                 return Redirect(returnUrl);
 

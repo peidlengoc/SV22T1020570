@@ -191,9 +191,7 @@ namespace SV22T1020570.DataLayers.SQLServer
             return count > 0;
         }
 
-        // ======================
-        // ATTRIBUTE
-        // ======================
+
 
         public async Task<List<ProductAttribute>> ListAttributesAsync(int productID)
         {
@@ -268,9 +266,6 @@ namespace SV22T1020570.DataLayers.SQLServer
             return rows > 0;
         }
 
-        // ======================
-        // PHOTO
-        // ======================
 
         public async Task<List<ProductPhoto>> ListPhotosAsync(int productID)
         {

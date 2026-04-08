@@ -52,7 +52,6 @@ namespace SV22T1020570.Admin.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Search(OrderSearchInput input)
         {
-            // ❌ Nếu date không hợp lệ → trả luôn bảng rỗng
             if ((input.DateFrom.HasValue && input.DateFrom.Value.Year < 1753) ||
                 (input.DateTo.HasValue && input.DateTo.Value.Year < 1753))
             {
@@ -494,7 +493,6 @@ namespace SV22T1020570.Admin.Controllers
         {
             try
             {
-                // 👉 GET: mở form modal
                 if (Request.Method == "GET")
                 {
                     var order = await SalesDataService.GetOrderAsync(id);
@@ -504,7 +502,6 @@ namespace SV22T1020570.Admin.Controllers
                     return PartialView(order); // View: Finish.cshtml
                 }
 
-                // 👉 POST: xử lý hoàn tất
                 if (Request.Method == "POST")
                 {
                     var order = await SalesDataService.GetOrderAsync(id);

@@ -7,12 +7,9 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ================= SERVICES =================
 
-// HttpContext
 builder.Services.AddHttpContextAccessor();
 
-// MVC
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(option =>
     {
@@ -20,7 +17,6 @@ builder.Services.AddControllersWithViews()
     });
 
 
-// 🔥 AUTH CHO SHOP (QUAN TRỌNG NHẤT)
 builder.Services.AddAuthentication("ShopScheme")
     .AddCookie("ShopScheme", option =>
     {
@@ -33,7 +29,7 @@ builder.Services.AddAuthentication("ShopScheme")
         option.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
     });
 
-// SESSION (dùng cho giỏ hàng sau này)
+
 builder.Services.AddSession(option =>
 {
     option.IdleTimeout = TimeSpan.FromHours(2);
@@ -42,7 +38,7 @@ builder.Services.AddSession(option =>
 });
 builder.Services.AddControllersWithViews();
 
-// ====== ADD Ở ĐÂY ======
+
 
 builder.Services.AddScoped<IShoppingCartRepository>(sp =>
     new ShoppingCartRepository(Configuration.ConnectionString));
@@ -54,7 +50,6 @@ builder.Services.AddScoped<ShoppingCartDBService>();
 
 var app = builder.Build();
 
-// ================= PIPELINE =================
 
 if (!app.Environment.IsDevelopment())
 {
@@ -65,25 +60,22 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// 🔥 BẮT BUỘC (thiếu là login không chạy)
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
 
-// ================= ROUTING =================
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
-// ================= CULTURE =================
 
 var cultureInfo = new CultureInfo("vi-VN");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-// ================= APPLICATION CONTEXT =================
+
 
 ApplicationContext.Configure(
     httpContextAccessor: app.Services.GetRequiredService<IHttpContextAccessor>(),
@@ -91,13 +83,11 @@ ApplicationContext.Configure(
     configuration: app.Configuration
 );
 
-// ================= DATABASE =================
 
 string connectionString = builder.Configuration.GetConnectionString("LiteCommerceDB")
     ?? throw new InvalidOperationException("ConnectionString not found");
 
 Configuration.Initialize(connectionString);
 
-// ================= RUN =================
 
 app.Run();

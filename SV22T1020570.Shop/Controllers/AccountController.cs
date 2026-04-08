@@ -119,7 +119,6 @@ namespace SV22T1020570.Shop.Controllers
 
             int customerId = int.Parse(user.UserId);
 
-            // 🔥 VALIDATION
             if (string.IsNullOrWhiteSpace(model.CustomerName))
                 ModelState.AddModelError("CustomerName", "Vui lòng nhập họ tên");
             if (string.IsNullOrWhiteSpace(model.ContactName))

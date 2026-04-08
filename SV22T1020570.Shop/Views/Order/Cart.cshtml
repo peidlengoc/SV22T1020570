@@ -37,7 +37,6 @@
                 {
                     <tr data-id="@item.ProductID">
 
-                        <!-- ✅ FIX IMAGE -->
                         <td>
                             <img src="~/images/products/@item.Photo"
                                  onerror="this.src='/img/nophoto.png'"
@@ -113,7 +112,6 @@
 
 <script>
 
-    // 🔥 EVENT DELEGATION (QUAN TRỌNG)
     $(document).on("click", ".plus", function () {
         let row = $(this).closest("tr");
         let id = row.data("id");
@@ -132,7 +130,6 @@
         updateCart(row, id, qty);
     });
 
-    // ❌ DELETE ITEM
     $(document).on("click", ".delete", function () {
         let row = $(this).closest("tr");
         let id = row.data("id");
@@ -145,7 +142,6 @@
         });
     });
 
-    // 🔥 CLEAR CART
     $("#clearCart").click(function () {
         if (!confirm("Xóa toàn bộ giỏ hàng?")) return;
 
@@ -157,7 +153,6 @@
         });
     });
 
-    // 🔥 UPDATE CART
     function updateCart(row, id, qty) {
 
         $.post("/Order/UpdateCart",
@@ -178,7 +173,6 @@
             });
     }
 
-    // 🔥 RECALC
     function recalc() {
 
         let subtotal = 0;
@@ -194,7 +188,6 @@
         ("#total").text(total.toFixed(2));
     }
 
-    // 🔥 CHECKOUT
     function goCheckout() {
         window.location = "/Order/Checkout";
     }
